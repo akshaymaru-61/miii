@@ -49,6 +49,12 @@
 }
 
 :root {
+  /* Claude-like warm canvas + sidebar (chat shell) */
+  --chat-canvas: #f5f4ef;
+  --chat-sidebar: #eceae3;
+  --chat-sidebar-hover: #e3e1d9;
+  --chat-border: #e0ddd4;
+  --chat-composer: #faf9f6;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
