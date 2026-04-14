@@ -54,6 +54,20 @@ Run the TUI in a **real interactive terminal** (not a pipe or some IDE panels); 
 
 ## Getting started
 
+### One-line install (curl · global `miii`)
+
+After you push this repo to GitHub, others can install the CLI like [OpenClaw](https://docs.openclaw.ai/install) (clones to `~/.miii/checkout`, runs `npm install`, then `npm install -g .`):
+
+```bash
+curl -fsSL --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/maruakshay/miii/main/scripts/install.sh | bash
+```
+
+- **Fork or different repo:** `curl ... | env MIII_REPO_URL=https://github.com/you/miibot.git bash -s` (or change the default `MIII_REPO_URL` in `scripts/install.sh`).
+- **Dry run:** `curl ... | bash -s -- --dry-run`
+- Requires **Git**, **Node.js 20+**, and **npm** on `PATH`.
+
+### From a clone
+
 Install dependencies and start the dev server:
 
 ```bash

@@ -2,6 +2,9 @@
   "name": "miibot",
   "version": "0.1.0",
   "private": true,
+  "bin": {
+    "miii": "./scripts/miii.mjs"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
