@@ -13,7 +13,7 @@ const argv = process.argv.slice(2);
 const sub = argv[0];
 
 function usage() {
-  console.log(`Miii — local Ollama chat (web + TUI)
+  console.log(`Miii — A local-first AI chat UI built to simplify running LLMs locally
 
 Usage:
   miii web [args]     Next.js dev server
