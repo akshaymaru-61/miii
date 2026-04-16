@@ -1,15 +1,19 @@
 # Miii
+
 ![miii web](public/ss1.png)
 ![miii terminal](public/ss2.png)
 
-> A local-first AI chat UI built to **simplify running LLMs locally** — with minimal setup and seamless usage.
+**Miii** is a **local-first AI workspace** for running models through **[Ollama](https://ollama.com)**—with **streaming replies**, **Markdown**, and optional **tools + RAG**, available in both a **Web UI** and a **terminal (TUI)**.
 
-miii is designed to **ease the installation and usage process**, eliminating the friction seen in tools like OpenClaw. With just a few integrations, it runs effortlessly via both a **Web UI and terminal**.
+### What you get
 
-It talks to **[Ollama](https://ollama.com)** through **[LangGraph](https://langchain-ai.github.io/langgraphjs/)**, with streamed replies and Markdown rendering. Built with [Next.js](https://nextjs.org) (App Router), React 19, Tailwind CSS 4, and UI primitives.
+- **Fast path to chatting** — pick a model, pull tags from the app, and stream responses over a simple HTTP API.
+- **Optional agent features** — **Tavily** web search and **custom tools** (JSON skills) wired through **LangGraph** when enabled.
+- **Document-aware answers** — **Chroma** RAG per conversation: ingest text/files, embed with Ollama, retrieve context for each turn.
+- **Two interfaces, one backend** — browser chat with shortcuts and slash menu; **Ink** TUI talking to the same server.
+  Built with [Next.js](https://nextjs.org) (App Router), React 19, Tailwind CSS 4.
 
 **Author:** Akshay Maru
-
 
 ## Why miii?
 
@@ -54,11 +58,11 @@ miii solves this by providing:
 
 ### Web UI shortcuts
 
-| Shortcut | Action |
-| -------- | ------ |
-| **⌘N / Ctrl+N** | New chat |
-| **⌘K / Ctrl+K** | Open model picker |
-| **⌘/ / Ctrl+/** | Focus composer |
+| Shortcut               | Action            |
+| ---------------------- | ----------------- |
+| **⌘N / Ctrl+N**        | New chat          |
+| **⌘K / Ctrl+K**        | Open model picker |
+| **⌘/ / Ctrl+/**        | Focus composer    |
 | **⌘⇧P / Ctrl+Shift+P** | Pull model dialog |
 
 The composer supports a **slash menu** (type `/` at the start of a line) for quick inserts and actions (clear, tools, Tavily key, …).
@@ -69,20 +73,19 @@ The composer supports a **slash menu** (type `/` at the start of a line) for qui
 - [Ollama](https://ollama.com) installed and running, with at least one model pulled (for example `ollama pull llama3.2`)
 - For RAG: Chroma reachable locally or remotely; for embeddings, an Ollama embedding model (default `nomic-embed-text` unless overridden)
 
-
 ## Configuration
 
 Environment variables (optional unless noted):
 
-| Variable | Description |
-|----------|-------------|
-| `OLLAMA_BASE_URL` | Ollama API base URL (default: `http://127.0.0.1:11434`) |
-| `TAVILY_API_KEY` | Tavily API key when web search is on and no client key is sent |
-| `MIIIBOT_URL` | Base URL for the TUI client (default: `http://127.0.0.1:3000`) |
-| `CHROMA_URL` | Chroma HTTP API base (default: `http://127.0.0.1:8000`) |
-| `CHROMA_API_KEY` | Optional server default for Chroma token |
-| `CHROMA_TENANT` | Optional server default tenant |
-| `CHROMA_DATABASE` | Optional server default database |
+| Variable             | Description                                                          |
+| -------------------- | -------------------------------------------------------------------- |
+| `OLLAMA_BASE_URL`    | Ollama API base URL (default: `http://127.0.0.1:11434`)              |
+| `TAVILY_API_KEY`     | Tavily API key when web search is on and no client key is sent       |
+| `MIIIBOT_URL`        | Base URL for the TUI client (default: `http://127.0.0.1:3000`)       |
+| `CHROMA_URL`         | Chroma HTTP API base (default: `http://127.0.0.1:8000`)              |
+| `CHROMA_API_KEY`     | Optional server default for Chroma token                             |
+| `CHROMA_TENANT`      | Optional server default tenant                                       |
+| `CHROMA_DATABASE`    | Optional server default database                                     |
 | `OLLAMA_EMBED_MODEL` | Embedding model for RAG chunking/query (default: `nomic-embed-text`) |
 
 Set values in `.env.local` as needed. For web search and Chroma headers you can also save values in the app (stored locally in the browser). The TUI reads `TAVILY_API_KEY` from the **shell** environment at startup and can override with `/tavily set` for the session.
@@ -122,13 +125,13 @@ After you push this repo to GitHub:
 curl -fsSL --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/maruakshay/miii/main/scripts/install.sh | bash
 ```
 
-* Fork/different repo:
+- Fork/different repo:
 
 ```bash
 curl ... | env MIII_REPO_URL=https://github.com/you/miibot.git bash -s
 ```
 
-* Dry run:
+- Dry run:
 
 ```bash
 curl ... | bash -s -- --dry-run
@@ -155,21 +158,19 @@ npm run dev
 | `npm run lint`  | ESLint                |
 | `npm run tui`   | Terminal UI           |
 
-
-
 ## Slash commands
 
 ### Web UI (composer)
 
 Sending a message that is exactly one of these runs the action instead of chatting:
 
-| Command | Action |
-| ------- | ------ |
-| `/clear` | Clear the current conversation’s messages |
-| `/clear all` | Reset to default conversations (all chats) |
-| `/tools` | Open **Add tool** (custom skill) |
-| `/delete-tool` | Open **Delete tool** |
-| `/web` | Open Tavily API key dialog |
+| Command        | Action                                     |
+| -------------- | ------------------------------------------ |
+| `/clear`       | Clear the current conversation’s messages  |
+| `/clear all`   | Reset to default conversations (all chats) |
+| `/tools`       | Open **Add tool** (custom skill)           |
+| `/delete-tool` | Open **Delete tool**                       |
+| `/web`         | Open Tavily API key dialog                 |
 
 The composer also supports a **`/` menu** (slash autocomplete) for the same actions and quick inserts.
 
@@ -179,21 +180,21 @@ Type **`/help`** for the authoritative list. The TUI adds CLI-oriented commands 
 
 ## Project layout (high level)
 
-| Path                          | Role |
-| ----------------------------- | ---- |
+| Path                          | Role                                      |
+| ----------------------------- | ----------------------------------------- |
 | `app/api/chat`                | Stream chat (Ollama + optional tools/RAG) |
-| `app/api/models`              | List models |
-| `app/api/ollama/pull`         | Proxy Ollama model pull (streaming) |
-| `app/api/rag/collections`     | List Chroma collections |
-| `app/api/rag/ingest`          | Ingest text/files into a collection |
-| `app/api/custom-tools`        | Manage JSON tools |
-| `lib/chat-graph.ts`           | LangGraph logic |
-| `lib/chat-tools.ts`           | Tool merging |
-| `lib/custom-tools.ts`         | Tool definitions |
-| `lib/rag-chroma.ts`           | Chroma client, query & ingest |
-| `lib/tavily-tool.ts`          | Tavily integration |
-| `lib/messages.ts`             | System prompts |
-| `lib/conversation-storage.ts` | Local storage |
-| `customTools/`                | JSON tools |
-| `components/chat/`            | Chat UI |
-| `scripts/miii-tui.tsx`        | TUI |
+| `app/api/models`              | List models                               |
+| `app/api/ollama/pull`         | Proxy Ollama model pull (streaming)       |
+| `app/api/rag/collections`     | List Chroma collections                   |
+| `app/api/rag/ingest`          | Ingest text/files into a collection       |
+| `app/api/custom-tools`        | Manage JSON tools                         |
+| `lib/chat-graph.ts`           | LangGraph logic                           |
+| `lib/chat-tools.ts`           | Tool merging                              |
+| `lib/custom-tools.ts`         | Tool definitions                          |
+| `lib/rag-chroma.ts`           | Chroma client, query & ingest             |
+| `lib/tavily-tool.ts`          | Tavily integration                        |
+| `lib/messages.ts`             | System prompts                            |
+| `lib/conversation-storage.ts` | Local storage                             |
+| `customTools/`                | JSON tools                                |
+| `components/chat/`            | Chat UI                                   |
+| `scripts/miii-tui.tsx`        | TUI                                       |
